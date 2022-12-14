@@ -3,24 +3,20 @@ import { Visibility } from "@material-ui/icons";
 import { useState } from "react";
 import { useEffect } from "react";
 import { userRequest } from "../../redux/requestMethods";
-
 export default function WidgetSm() {
   
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
 
-  useEffect(()=> {
-    const getUsers = async ()=> {
+  useEffect(() => {
+    const getUsers = async () => {
       try {
-        const res = await userRequest.get("users/?new=true"); //TIP: this is a query
-        setUsers(res.data);          
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
+        const res = await userRequest.get("users/?new=true");
+        setUsers(res.data);
+      } catch {}
+    };
     getUsers();
-  }, [])
-
+  }, []);
+  
   useEffect(()=> {
     console.log('users:', users);
   }, [users])
