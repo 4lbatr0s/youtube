@@ -10,17 +10,28 @@ import ProductList from "./pages/productList/ProductList";
 import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
 import { store } from "./redux/store";
-import { Provider } from 'react-redux'
+import { Provider } from "react-redux";
 import Login from "./pages/login/login";
 
 function App() {
+  //INFO: How to render admin panel depending on the isAdmin property of the
+  const currentUser = JSON.parse(
+    JSON.parse(localStorage.getItem("persist:root")).user
+  ).currentUser;
+  let admin = "";
+  if (currentUser) {
+    //INFO: HOW TO DYNAMICALLY GET ACCESSTOKEN WITH REDUX-PERSIST!
+    admin = currentUser.isAdmin;
+    //TIP: root: go to store and see key  value of the persistConfig. It's root!
+  }
 
-  //INFO: How to render admin panel depending on the isAdmin property of the 
-  let admin = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).currentUser).isAdmin;
   admin = true;
+  
   return (
     <Router>
-      <Switch> {/**INFO: By putting switch on top of the route, and putting login after switch and before other routes helps us with not showing other pages without logging in to the web page!  */}
+      <Switch>
+        {" "}
+        {/**INFO: By putting switch on top of the route, and putting login after switch and before other routes helps us with not showing other pages without logging in to the web page!  */}
         <Route path="/login">
           <Login />
         </Route>
@@ -50,12 +61,9 @@ function App() {
               <Route path="/newproduct">
                 <NewProduct />
               </Route>
-
             </div>
           </>
-        )
-        }
-
+        )}
       </Switch>
     </Router>
   );
