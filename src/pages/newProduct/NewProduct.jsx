@@ -1,21 +1,9 @@
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import "./newProduct.css";
-import app from "../../../firebase";
-const storage = getStorage();
-const storageRef = ref(storage, "images/mountains.jpg");
-
-// Upload the file and metadata
-const uploadTask = uploadBytesResumable(storageRef, file);
-
-// Pause the upload
-uploadTask.pause();
-
-// Resume the upload
-uploadTask.resume();
-
-// Cancel the upload
-uploadTask.cancel();
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; //INFO: you should install firebase!
+import app from "../../firebase"; 
+import { addProduct } from "../../redux/apiCalls";
 export default function NewProduct() {
   const dispatch = useDispatch();
 
@@ -73,7 +61,8 @@ export default function NewProduct() {
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
+          const product = ({...inputs, img:downloadURL, categories:categories }); //INFO: HOW TO SEND PRODUCT INFO TO BACKEND
+          addProduct(product, dispatch);
         });
       }
     );
